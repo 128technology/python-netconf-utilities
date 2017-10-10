@@ -2,7 +2,7 @@
 from sys import argv
 import os
 from ncclient import manager
-import Config
+from ote_utils import utils.Config
 
 class ncclientAgent(object):
     def __init__(self, ncclient_manager):
