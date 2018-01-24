@@ -126,7 +126,7 @@ class NetconfConverter(object):
         elif operation == 'create':
             elem.set(NetconfConverter.operation_elem_name, 'create')
 
-        if yang_keyword in ['leaf','leaf-list']:
+        if yang_keyword in ['leaf','leaf-list','case']:
             if self._is_identity_type(tokens[1], ns):
                 tokens[1] = prefix + ':' + tokens[1]
             builder.data(' '.join(tokens[1:]))
