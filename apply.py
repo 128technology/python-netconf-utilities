@@ -43,7 +43,7 @@ class t128Configurator(object):
         commit_status = self.config_agent.commitConfig(validationType=validationType)
         return commit_status
 
-def _commit_config_xml(config_xml, t128_host='127.0.0.1', t128_port='830', t128_user='root', t128_publickey='/etc/128technology/ssh/pdc_ssh_key',  validationType='distributed'):
+def _commit_config_xml(config_xml, t128_host='127.0.0.1', t128_port='830', t128_user='admin', t128_publickey='/etc/128technology/ssh/pdc_ssh_key',  validationType='distributed'):
     netconf_session = manager.connect(host=t128_host, port=t128_port, username=t128_user, key_filename=t128_publickey,
                                           allow_agent=True, look_for_keys=False, hostkey_verify=False)
     ncclient_agent = ncclientAgent(netconf_session)
