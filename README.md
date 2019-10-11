@@ -1,22 +1,6 @@
 # 128T Python NETCONF Utilities #
 This repo contains libraries and scripts to simplify working with the configuration of 128T Routers over the NETCONF interface.  The majority of the files from this project are copied directly from the Engineering i95 repo under /i95/tools/python_distributions directory.  In addition, the Class for modeling 128T configuration has been copied from the i95 repo /i95/robot/lib/libraries/Config.py to /ote_utils/utils/Config.py in this repo for simplicity.  In the future, these utilities may be reloacted to a shared location in order to avoid divergence away from Engineering.
 
-## Local Packaging ##
-To create locally packaged wheel house with all netconf_utils requirments:
-run `python3.6 setup.py package` -> Creates local dependancies in `wheelhouse` dir
-Now tar the repo: `tar -zcvf netconf_utils.tar.gz python-netconf-utilities`
-
-!! Note !!
-This script collects the installed (compiled) requirements from where it runs, this means that if your requirements.txt contains any requirements that are based on C-extensions such as psycopg for example, the compiled package will be collected.
-When you unpack the archive at the destination if the system is different than the system you collected the package from it will not work as intended and even crash.
-
-ubuntu != centos != macOS
-python2.6 != python2.7 != python3.6 etc...
-
-Now to install: Untar package `tar -xzf netconf_utils.tar.gz`
-And install with locals `pip install -r requirements.txt  --no-index --find-links wheelhouse`
-
-
 ## Installation ##
 These utilities should be installed on a 128T Router or Conductor or another system that will interact with a remote 128T Router or Conductor's NETCONF interface.  After cloning the repo, run the following commands to install the libraries and other required dependencies.
 ```
