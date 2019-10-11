@@ -7,21 +7,22 @@ from lxml import etree
 import yinsolidated
 
 
+
 class ConfigParseError(RuntimeError):
 
     "Exception class for errors while parsing configuration"
-
 
 class NetconfConverter(object):
 
     """
     Converts a running configuration to Netconf XML.
     """
-
-    YIN_NAMESPACE = "urn:ietf:params:xml:ns:yang:yin:1"
-    IDENTITY_TAG = str(etree.QName(YIN_NAMESPACE, "identity"))
+    YIN_NAMESPACE = 'urn:ietf:params:xml:ns:yang:yin:1'
+    IDENTITY_TAG = str(etree.QName(YIN_NAMESPACE, 'identity'))
     IDENTITY_MAP = {}
-    operation_elem_name = etree.QName("urn:ietf:params:xml:ns:netconf:base:1.0", "operation")
+    operation_elem_name = etree.QName(
+        'urn:ietf:params:xml:ns:netconf:base:1.0',
+        'operation')
 
     def load_config_model(self, config_model_file):
         """
@@ -65,29 +66,27 @@ class NetconfConverter(object):
     def _convert_config_list_to_netconf_xml(self, config_list, tag, attributes):
 
         builder = etree.TreeBuilder()
-        config_elem_name = etree.QName("urn:ietf:params:xml:ns:netconf:base:1.0", tag)
+        config_elem_name = etree.QName(
+            'urn:ietf:params:xml:ns:netconf:base:1.0',
+            tag)
         builder.start(config_elem_name, attributes)
-        builder.data("\n")
+        builder.data('\n')
 
         current_xml_token_stack = []
-        config_line = "(start)"
+        config_line = '(start)'
 
         try:
             for line_number, config_line in enumerate(config_list, start=1):
                 if not self._is_line_empty_or_comment(config_line):
-                    self._process_config_line(builder, current_xml_token_stack, config_line)
+                    self._process_config_line(builder, current_xml_token_stack,
+                                              config_line)
             builder.end(config_elem_name)
-            builder.data("\n")
+            builder.data('\n')
             root = builder.close()
         except Exception as e:
-            raise ConfigParseError(
-                "Error parsing config, line "
-                + str(line_number)
-                + ': "'
-                + config_line
-                + '" : '
-                + str(e)
-            )
+            raise ConfigParseError('Error parsing config, line ' +
+                                   str(line_number) + ': "' + config_line +
+                                   '" : ' + str(e))
         return root
 
     def _process_config_line(self, builder, stack, config_line):
@@ -96,21 +95,21 @@ class NetconfConverter(object):
         start_token = 0
         end_token = 0
         if len(tokens) > 1:
-            start_token = 1
-            end_token = len(tokens) - 1
+           start_token = 1
+           end_token = len(tokens) - 1
 
         if tokens[start_token].startswith('"') and tokens[end_token].endswith('"'):
             tokens[start_token] = tokens[start_token][1:]
             tokens[end_token] = tokens[end_token][:-1]
 
-        if tokens[0] == "exit":
+        if tokens[0] == 'exit':
             self._process_exit_token(builder, stack)
-        elif tokens[0] == "delete":
+        elif tokens[0] == 'delete':
             del tokens[0]
-            self._process_config_tokens(builder, stack, tokens, "delete")
-        elif tokens[0] == "create":
+            self._process_config_tokens(builder, stack, tokens, 'delete')
+        elif tokens[0] == 'create':
             del tokens[0]
-            self._process_config_tokens(builder, stack, tokens, "create")
+            self._process_config_tokens(builder, stack, tokens, 'create')
         else:
             self._process_config_tokens(builder, stack, tokens)
 
@@ -120,22 +119,22 @@ class NetconfConverter(object):
         element_name = etree.QName(ns, first_token)
 
         self._add_indent(builder, stack)
-        elem = builder.start(element_name, {}, {prefix: ns})
+        elem = builder.start(element_name, {}, {prefix:ns})
 
-        if operation == "delete":
-            elem.set(NetconfConverter.operation_elem_name, "delete")
-        elif operation == "create":
-            elem.set(NetconfConverter.operation_elem_name, "create")
+        if operation == 'delete':
+            elem.set(NetconfConverter.operation_elem_name, 'delete')
+        elif operation == 'create':
+            elem.set(NetconfConverter.operation_elem_name, 'create')
 
-        if yang_keyword in ["leaf", "leaf-list", "case"]:
+        if yang_keyword in ['leaf','leaf-list','case']:
             if self._is_identity_type(tokens[1], ns):
-                tokens[1] = prefix + ":" + tokens[1]
-            builder.data(" ".join(tokens[1:]))
+                tokens[1] = prefix + ':' + tokens[1]
+            builder.data(' '.join(tokens[1:]))
             builder.end(element_name)
-            builder.data("\n")
+            builder.data('\n')
         else:
             stack.append(first_token)
-            builder.data("\n")
+            builder.data('\n')
 
     def _find_model_node(self, stack, token):
         stack_copy = list(stack)
@@ -147,7 +146,7 @@ class NetconfConverter(object):
             tree = self.find_child(tree, name)
 
         if tree is None:
-            raise Exception("Token {} does not exist in the data model".format(token))
+            raise Exception('Token {} does not exist in the data model'.format(token))
 
         return tree.namespace, tree.prefix, etree.QName(tree.tag).localname
 
@@ -155,7 +154,7 @@ class NetconfConverter(object):
         node = tree.find("*/[@name='{}']".format(name))
         if node is None:
             for child in tree:
-                if etree.QName(child.tag).localname in ["choice", "case"]:
+                if etree.QName(child.tag).localname in ['choice', 'case']:
                     node = self.find_child(child, name)
                     if node is not None:
                         return node
@@ -168,29 +167,28 @@ class NetconfConverter(object):
         stack.pop()
         self._add_indent(builder, stack)
         builder.end(element_name)
-        builder.data("\n")
+        builder.data('\n')
 
     def _convert_config_string_to_list(self, config_str):
         lines = config_str.splitlines()
         return [line.strip() for line in lines]
 
     def _is_line_empty_or_comment(self, config_line):
-        return (len(config_line) == 0) or (config_line[0] == "#")
+        return (len(config_line) == 0) or (config_line[0] == '#')
 
     def _add_indent(self, builder, stack):
-        indent = len(stack) * "    "
+        indent = len(stack) * '    '
         builder.data(indent)
 
     def _find_identities(self):
-        identities = self.model.findall("/" + self.IDENTITY_TAG)
+        identities = self.model.findall('/' + self.IDENTITY_TAG)
         for child in identities:
-            self.IDENTITY_MAP[child.name] = {"prefix": child.prefix, "namespace": child.namespace}
+            self.IDENTITY_MAP[child.name] = {'prefix' : child.prefix, 'namespace' : child.namespace}
 
     def _is_identity_type(self, token, namespace):
         is_identity = False
         try:
-            if self.IDENTITY_MAP[token]["namespace"] == namespace:
+            if self.IDENTITY_MAP[token]['namespace'] == namespace:
                 is_identity = True
-        except KeyError:
-            pass
+        except KeyError: pass
         return is_identity
