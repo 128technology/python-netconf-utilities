@@ -13,7 +13,7 @@ def create_netconf_rpc_request(command, namespace, **args):
     arguments can be specified optionally by args.
     """
 
-    args_dict = {'#ns': namespace}
+    args_dict = {"#ns": namespace}
     args_dict.update(args)
     command_ele = etree.fromstring(exemel.build(args_dict, root=command))
 
@@ -27,7 +27,10 @@ def parse_xml_to_dict(result_xml_str):
     nodes.  When multiple of the same element is present, values will be
     appended together as a list.
     """
-    result_xml = etree.fromstring(result_xml_str)
+    try:
+        result_xml = etree.fromstring(bytes(result_xml_str, 'utf-8'))
+    except:
+        result_xml = etree.fromstring(str(result_xml_str))
     return _parse_xml_to_dict_recurse(result_xml)
 
 

@@ -1,3 +1,4 @@
+from builtins import object
 import logging
 
 
@@ -40,10 +41,10 @@ class OteLogger(object):
             OteLogger.GLOBAL_LEVEL = level
 
             for logger in OteLogger.LOGGERS:
-                logger.info('Global loglevel set to {}'.format(level))
+                logger.info("Global loglevel set to {}".format(level))
                 logger.set_loglevel(level)
 
-    def __init__(self, name, level=None, console=True, filename=None, file_mode='overwrite'):
+    def __init__(self, name, level=None, console=True, filename=None, file_mode="overwrite"):
         """Initialize a new logger instance
         Args:
             name: name of the logger to initialize. Generally pass it __name__
@@ -66,7 +67,7 @@ class OteLogger(object):
             self.loglevel = OteLogger.GLOBAL_LEVEL
 
         self.logger.setLevel(self.loglevel)
-        self.formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        self.formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
         if console is True:
             self.enable_logging_to_console()
@@ -80,9 +81,9 @@ class OteLogger(object):
         handler = logging.StreamHandler()
         handler.setFormatter(self.formatter)
         self.logger.addHandler(handler)
-        self.debug('Logging to console enabled')
+        self.debug("Logging to console enabled")
 
-    def enable_logging_to_file(self, filename=None, file_mode='overwrite'):
+    def enable_logging_to_file(self, filename=None, file_mode="overwrite"):
         """Enable logging to a file
         Args:
             filename: (default: None) if a filename is given all messages will
@@ -93,13 +94,13 @@ class OteLogger(object):
                        If 'overwrite', a new file is created each time.
         """
         if filename is not None:
-            mode = 'w'
-            if file_mode.lower() == 'append':
-                mode = 'a'
+            mode = "w"
+            if file_mode.lower() == "append":
+                mode = "a"
             handler = logging.FileHandler(filename, mode=mode)
             handler.setFormatter(self.formatter)
             self.logger.addHandler(handler)
-            self.debug('Logging to file \'{}\' enabled'.format(filename))
+            self.debug("Logging to file '{}' enabled".format(filename))
 
     def set_loglevel(self, level):
         """Set the log level for for this instance
@@ -111,21 +112,21 @@ class OteLogger(object):
             logging_level = getattr(logging, level.upper())
             self.loglevel = logging_level
             self.logger.setLevel(self.loglevel)
-            self.debug('Logging level set to {}'.format(level))
+            self.debug("Logging level set to {}".format(level))
         else:
-            self.logger.info('set_loglevel: Invalid loglevel: {}'.format(level))
+            self.logger.info("set_loglevel: Invalid loglevel: {}".format(level))
 
-    def debug(self, msg):
-        self.logger.debug(msg)
+    def debug(self, msg, *args, **kwargs):
+        self.logger.debug(msg, *args, **kwargs)
 
-    def info(self, msg):
-        self.logger.info(msg)
+    def info(self, msg, *args, **kwargs):
+        self.logger.info(msg, *args, **kwargs)
 
-    def warning(self, msg):
-        self.logger.warning(msg)
+    def warning(self, msg, *args, **kwargs):
+        self.logger.warning(msg, *args, **kwargs)
 
-    def error(self, msg):
-        self.logger.error(msg)
+    def error(self, msg, *args, **kwargs):
+        self.logger.error(msg, *args, **kwargs)
 
-    def critical(self, msg):
-        self.logger.critical(msg)
+    def critical(self, msg, *args, **kwargs):
+        self.logger.critical(msg, *args, **kwargs)

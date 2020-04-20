@@ -17,17 +17,33 @@ from .platform import PY2
 
 
 if PY2:
-    from .robottypes2 import (is_bytes, is_dict_like, is_integer, is_list_like,
-                              is_number, is_string, is_unicode, type_name)
+    from .robottypes2 import (
+        is_bytes,
+        is_dict_like,
+        is_integer,
+        is_list_like,
+        is_number,
+        is_string,
+        is_unicode,
+        type_name,
+    )
 
 else:
-    from .robottypes3 import (is_bytes, is_dict_like, is_integer, is_list_like,
-                              is_number, is_string, is_unicode, type_name)
+    from .robottypes3 import (
+        is_bytes,
+        is_dict_like,
+        is_integer,
+        is_list_like,
+        is_number,
+        is_string,
+        is_unicode,
+        type_name,
+    )
 
 
 def is_truthy(item):
     if is_string(item):
-        return item.upper() not in ('FALSE', 'NO', '')
+        return item.upper() not in ("FALSE", "NO", "")
     return bool(item)
 
 

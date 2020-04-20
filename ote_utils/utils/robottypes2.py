@@ -49,8 +49,7 @@ def is_unicode(item):
 
 
 def is_list_like(item):
-    if isinstance(item, (str, unicode, bytes, bytearray, UserString, String,
-                         file)):
+    if isinstance(item, (str, unicode, bytes, bytearray, UserString, String, file)):
         return False
     try:
         iter(item)
@@ -67,8 +66,16 @@ def is_dict_like(item):
 
 
 def type_name(item):
-    cls = item.__class__ if hasattr(item, '__class__') else type(item)
-    named_types = {str: 'string', unicode: 'string', bool: 'boolean',
-                   int: 'integer', long: 'integer', NoneType: 'None',
-                   dict: 'dictionary', type: 'class', ClassType: 'class'}
+    cls = item.__class__ if hasattr(item, "__class__") else type(item)
+    named_types = {
+        str: "string",
+        unicode: "string",
+        bool: "boolean",
+        int: "integer",
+        long: "integer",
+        NoneType: "None",
+        dict: "dictionary",
+        type: "class",
+        ClassType: "class",
+    }
     return named_types.get(cls, cls.__name__)

@@ -1,0 +1,13 @@
+            config
+                authority
+                    router r1
+                        name r1
+                        node n1
+                            name n1
+                        exit
+                        node n2
+                            name n2
+                        exit
+                    exit
+                exit
+            exit

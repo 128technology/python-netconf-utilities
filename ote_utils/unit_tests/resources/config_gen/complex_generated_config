@@ -1,0 +1,272 @@
+            config
+                authority
+                    router          router1
+                        name        router1
+                        node        node-A
+                            name                    node-A
+                            description             "linecard-test node"
+                            enabled                 true
+                            device-interface        10
+                                name               10
+                                description        "device 1"
+                                type               ethernet
+                                pci-address        0000:14:00.1
+                                network-interface  intf1
+                                    name                   intf1
+                                    global-id              1
+                                    vlan                   0
+                                    type                   external
+                                    inter-router-security  interrouter
+                                    rewrite-dscp           false
+                                    source-nat             false
+                                    qp-value               30
+                                    mtu                    9198
+                                    address                192.168.10.2/28
+                                        ip-address     192.168.10.2/28
+                                        prefix-length  28
+                                        gateway        192.168.10.1
+                                    exit
+                                exit
+                            exit
+                        exit
+                    exit
+                exit
+            exit
+            config
+                authority
+                    router          router2
+                        name        router2
+                        node        node-A
+                            name                    node-A
+                            description             "linecard-test node"
+                            enabled                 true
+                            device-interface        10
+                                name               10
+                                description        "device 1"
+                                type               ethernet
+                                pci-address        0000:14:00.1
+                                network-interface  intf2
+                                    name                   intf2
+                                    global-id              1
+                                    vlan                   0
+                                    type                   external
+                                    inter-router-security  interrouter
+                                    rewrite-dscp           false
+                                    source-nat             false
+                                    qp-value               30
+                                    mtu                    9198
+                                    address                192.168.10.18/28
+                                        ip-address     192.168.10.18/28
+                                        prefix-length  28
+                                        gateway        192.168.10.17
+                                    exit
+                                exit
+                            exit
+                        exit
+                    exit
+                exit
+            exit
+            config
+                authority
+                    router          router1
+                        name        router1
+                        node        node-B
+                            name                    node-B
+                            description             "linecard-test node"
+                            enabled                 true
+                            device-interface        10
+                                name               10
+                                description        "device 1"
+                                type               ethernet
+                                pci-address        0000:14:00.1
+                                network-interface  intf3
+                                    name                   intf3
+                                    global-id              1
+                                    vlan                   0
+                                    type                   external
+                                    inter-router-security  interrouter
+                                    rewrite-dscp           false
+                                    source-nat             false
+                                    qp-value               30
+                                    mtu                    9198
+                                    address                192.168.10.34/28
+                                        ip-address     192.168.10.34/28
+                                        prefix-length  28
+                                        gateway        192.168.10.33
+                                    exit
+                                exit
+                            exit
+                        exit
+                    exit
+                exit
+            exit
+            config
+                authority
+                    router          router2
+                        name        router2
+                        node        node-B
+                            name                    node-B
+                            description             "linecard-test node"
+                            enabled                 true
+                            device-interface        10
+                                name               10
+                                description        "device 1"
+                                type               ethernet
+                                pci-address        0000:14:00.1
+                                network-interface  intf4
+                                    name                   intf4
+                                    global-id              1
+                                    vlan                   0
+                                    type                   external
+                                    inter-router-security  interrouter
+                                    rewrite-dscp           false
+                                    source-nat             false
+                                    qp-value               30
+                                    mtu                    9198
+                                    address                192.168.10.50/28
+                                        ip-address     192.168.10.50/28
+                                        prefix-length  28
+                                        gateway        192.168.10.49
+                                    exit
+                                exit
+                            exit
+                        exit
+                    exit
+                exit
+            exit
+            config
+                authority
+                    router          router1
+                        name        router1
+                        node        node-A
+                            name                    node-A
+                            description             "linecard-test node"
+                            enabled                 true
+                            device-interface        10
+                                name               10
+                                description        "device 1"
+                                type               ethernet
+                                pci-address        0000:14:00.1
+                                network-interface  intf5
+                                    name                   intf5
+                                    global-id              1
+                                    vlan                   0
+                                    type                   external
+                                    inter-router-security  interrouter
+                                    rewrite-dscp           false
+                                    source-nat             false
+                                    qp-value               30
+                                    mtu                    9198
+                                    address                192.168.10.66/28
+                                        ip-address     192.168.10.66/28
+                                        prefix-length  28
+                                        gateway        192.168.10.65
+                                    exit
+                                exit
+                            exit
+                        exit
+                    exit
+                exit
+            exit
+            config
+                authority
+                    router          router2
+                        name        router2
+                        node        node-A
+                            name                    node-A
+                            description             "linecard-test node"
+                            enabled                 true
+                            device-interface        10
+                                name               10
+                                description        "device 1"
+                                type               ethernet
+                                pci-address        0000:14:00.1
+                                network-interface  intf6
+                                    name                   intf6
+                                    global-id              1
+                                    vlan                   0
+                                    type                   external
+                                    inter-router-security  interrouter
+                                    rewrite-dscp           false
+                                    source-nat             false
+                                    qp-value               30
+                                    mtu                    9198
+                                    address                192.168.10.82/28
+                                        ip-address     192.168.10.82/28
+                                        prefix-length  28
+                                        gateway        192.168.10.81
+                                    exit
+                                exit
+                            exit
+                        exit
+                    exit
+                exit
+            exit
+            config
+                authority
+                    router          router1
+                        name        router1
+                        node        node-B
+                            name                    node-B
+                            description             "linecard-test node"
+                            enabled                 true
+                            device-interface        10
+                                name               10
+                                description        "device 1"
+                                type               ethernet
+                                pci-address        0000:14:00.1
+                                network-interface  intf7
+                                    name                   intf7
+                                    global-id              1
+                                    vlan                   0
+                                    type                   external
+                                    inter-router-security  interrouter
+                                    rewrite-dscp           false
+                                    source-nat             false
+                                    qp-value               30
+                                    mtu                    9198
+                                    address                192.168.10.98/28
+                                        ip-address     192.168.10.98/28
+                                        prefix-length  28
+                                        gateway        192.168.10.97
+                                    exit
+                                exit
+                            exit
+                        exit
+                    exit
+                exit
+            exit
+            config
+                authority
+                    router          router2
+                        name        router2
+                        node        node-B
+                            name                    node-B
+                            description             "linecard-test node"
+                            enabled                 true
+                            device-interface        10
+                                name               10
+                                description        "device 1"
+                                type               ethernet
+                                pci-address        0000:14:00.1
+                                network-interface  intf8
+                                    name                   intf8
+                                    global-id              1
+                                    vlan                   0
+                                    type                   external
+                                    inter-router-security  interrouter
+                                    rewrite-dscp           false
+                                    source-nat             false
+                                    qp-value               30
+                                    mtu                    9198
+                                    address                192.168.10.114/28
+                                        ip-address     192.168.10.114/28
+                                        prefix-length  28
+                                        gateway        192.168.10.113
+                                    exit
+                                exit
+                            exit
+                        exit
+                    exit
+                exit
+            exit

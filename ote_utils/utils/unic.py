@@ -13,6 +13,8 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+from builtins import str
+from builtins import chr
 from pprint import PrettyPrinter
 
 from .platform import IRONPYTHON, JYTHON, PY2
@@ -22,21 +24,21 @@ from .robottypes import is_bytes, is_unicode
 if PY2:
 
     def unic(item):
-        if isinstance(item, unicode):
+        if isinstance(item, str):
             return item
         if isinstance(item, (bytes, bytearray)):
             try:
-                return item.decode('ASCII')
+                return item.decode("ASCII")
             except UnicodeError:
-                return u''.join(chr(b) if b < 128 else '\\x%x' % b
-                                for b in bytearray(item))
+                return u"".join(chr(b) if b < 128 else "\\x%x" % b for b in bytearray(item))
         try:
             try:
-                return unicode(item)
+                return str(item)
             except UnicodeError:
                 return unic(str(item))
         except:
             return _unrepresentable_object(item)
+
 
 else:
 
@@ -45,10 +47,9 @@ else:
             return item
         if isinstance(item, (bytes, bytearray)):
             try:
-                return item.decode('ASCII')
+                return item.decode("ASCII")
             except UnicodeError:
-                return ''.join(chr(b) if b < 128 else '\\x%x' % b
-                               for b in item)
+                return "".join(chr(b) if b < 128 else "\\x%x" % b for b in item)
         try:
             return str(item)
         except:
@@ -60,10 +61,11 @@ else:
 if not (JYTHON or IRONPYTHON):
 
     from unicodedata import normalize
+
     _unic = unic
 
     def unic(item):
-        return normalize('NFC', _unic(item))
+        return normalize("NFC", _unic(item))
 
 
 def prepr(item, width=400):
@@ -71,13 +73,12 @@ def prepr(item, width=400):
 
 
 class PrettyRepr(PrettyPrinter):
-
     def format(self, object, context, maxlevels, level):
         try:
             if is_unicode(object):
-                return repr(object).lstrip('u'), True, False
+                return repr(object).lstrip("u"), True, False
             if is_bytes(object):
-                return 'b' + repr(object).lstrip('b'), True, False
+                return "b" + repr(object).lstrip("b"), True, False
             return PrettyPrinter.format(self, object, context, maxlevels, level)
         except:
             return _unrepresentable_object(object), True, False
@@ -85,5 +86,8 @@ class PrettyRepr(PrettyPrinter):
 
 def _unrepresentable_object(item):
     from .error import get_error_message
-    return u"<Unrepresentable object %s. Error: %s>" \
-           % (item.__class__.__name__, get_error_message())
+
+    return u"<Unrepresentable object %s. Error: %s>" % (
+        item.__class__.__name__,
+        get_error_message(),
+    )

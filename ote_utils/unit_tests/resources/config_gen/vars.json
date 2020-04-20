@@ -1,0 +1,57 @@
+{
+    "txt_copy": {
+        "type": "num",
+        "depends_on": null,
+        "num_iters": 13,
+        "target": "#copy#",
+        "start": 1,
+        "step": 1,
+        "resets": "no",
+        "prefix": "",
+        "suffix": ""
+    },
+    "j2_copy": {
+        "type": "num",
+        "depends_on": "txt_copy",
+        "num_iters": 1,
+        "target": "{{ copy }}",
+        "start": 1,
+        "step": 1,
+        "resets": "no",
+        "prefix": "",
+        "suffix": ""
+    },
+    "version": {
+        "type": "str",
+        "depends_on": "j2_copy",
+        "num_iters": 2,
+        "target": "{{ version }}",
+        "start": "A",
+        "step": "alphabet",
+        "resets": "yes",
+        "prefix": "",
+        "suffix": ""
+    },
+    "txt_letter": {
+        "type": "str",
+        "depends_on": "version",
+        "num_iters": 1,
+        "target": "current_letter",
+        "start": "a",
+        "step": "alphabet",
+        "resets": "no",
+        "prefix": "",
+        "suffix": ""
+    },
+    "j2_letter": {
+        "type": "str",
+        "depends_on": "txt_letter",
+        "num_iters": 1,
+        "target": "{{ letter }}",
+        "start": "a",
+        "step": "alphabet",
+        "resets": "no",
+        "prefix": "",
+        "suffix": ""
+    }
+}

@@ -1,5 +1,6 @@
 import json
 
+
 def create_dict_from_json(input_file):
     """
     Opens a .jsom file and converts it into a
@@ -8,6 +9,7 @@ def create_dict_from_json(input_file):
     with open(input_file) as json_file:
         json_dict = json.load(json_file)
     return json_dict
+
 
 def get_key_values(dictionary, key):
     """
@@ -26,13 +28,14 @@ def _get_dictionary_using_unique_pair(dictionary, search_key, search_value, leaf
             leaf = dictionary
         if isinstance(dictionary[key], dict):
             leaf = _get_dictionary_using_unique_pair(
-                dictionary[key], search_key, search_value, leaf)
+                dictionary[key], search_key, search_value, leaf
+            )
         elif isinstance(dictionary[key], list):
             for item in dictionary[key]:
                 if isinstance(item, dict):
-                    leaf = _get_dictionary_using_unique_pair(
-                        item, search_key, search_value, leaf)
+                    leaf = _get_dictionary_using_unique_pair(item, search_key, search_value, leaf)
     return leaf
+
 
 def _key_value_generator(dictionary, key):
     if key in dictionary:

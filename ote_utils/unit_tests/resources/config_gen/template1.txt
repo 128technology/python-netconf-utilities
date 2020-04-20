@@ -1,0 +1,3 @@
+this is copy #copy# of the text template.
+    this template is version {{ version }}
+    and is currently on letter current_letter of the alphabet.

@@ -13,6 +13,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+from builtins import bytes
 import sys
 from collections import MutableMapping
 
@@ -45,9 +46,13 @@ def normalize(string, ignore=(), caseless=True, spaceless=True):
 
 # http://ironpython.codeplex.com/workitem/33133
 if IRONPYTHON and sys.version_info < (2, 7, 5):
+
     def lower(string):
-        return ('A' + string).lower()[1:]
+        return ("A" + string).lower()[1:]
+
+
 else:
+
     def lower(string):
         return string.lower()
 
@@ -71,7 +76,7 @@ class NormalizedDict(MutableMapping):
             self._add_initial(initial)
 
     def _add_initial(self, initial):
-        items = initial.items() if hasattr(initial, 'items') else initial
+        items = list(initial.items()) if hasattr(initial, "items") else initial
         for key, value in items:
             self[key] = value
 
@@ -95,7 +100,7 @@ class NormalizedDict(MutableMapping):
         return len(self._data)
 
     def __str__(self):
-        return '{%s}' % ', '.join('%r: %r' % (key, self[key]) for key in self)
+        return "{%s}" % ", ".join("%r: %r" % (key, self[key]) for key in self)
 
     def __eq__(self, other):
         if not is_dict_like(other):
