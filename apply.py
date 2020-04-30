@@ -1,8 +1,8 @@
-#!/bin/python
+#!/usr/bin/python3.6
 from sys import argv
 import os
 from ncclient import manager
-from ote_utils.utils import Config
+from ote_utils.netconfutils.netconfconverter import NetconfConverter
 from lxml import etree
 
 class ncclientAgent(object):
@@ -53,19 +53,19 @@ def _commit_config_xml(config_xml, t128_host='127.0.0.1', t128_port='830', t128_
     if config_status.ok:
         commit_status = t128_configurator.commit(validationType=validationType)
         if commit_status.ok:
-            print "Configuration committed successfully"
+            print("Configuration committed successfully")
         else:
-            print "There was an error committing the config"
+            print("There was an error committing the config")
     else:
-        print "There was an error adding the candidate config"
+        print("There was an error adding the candidate config")
 
 if len(argv) < 2:
-  print "This tool will apply a 128T configuration to the local router/conductor over the NETCONF interface. The configuration must be saved to a file in flat-text format"
-  print "Usage: {0} filename".format(argv[0])
+  print("This tool will apply a 128T configuration to the local router/conductor over the NETCONF interface. The configuration must be saved to a file in flat-text format")
+  print("Usage: {0} filename".format(argv[0]))
 else:
   with open(argv[1], 'r') as config:
     config_text = config.read()
-  cc = Config.Config()
-  cc.load_t128_config_model('/var/model/consolidatedT128Model.xml')
-  config_text_xml = cc.convert_config_to_netconf_xml(config_text.split('\n'))
+  cc = NetconfConverter()
+  cc.load_config_model('/var/model/consolidatedT128Model.xml')
+  config_text_xml = cc.convert_config_to_netconf_xml(config_text.split('\n'), 'config')
   _commit_config_xml(config_text_xml, validationType='local')
