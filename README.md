@@ -1,13 +1,17 @@
 # 128T Python NETCONF Utilities #
-This repo contains libraries and scripts to simplify working with the configuration of 128T Routers over the NETCONF interface.  The majority of the files from this project are copied directly from the Engineering i95 repo under /i95/tools/python_distributions directory.  In addition, the Class for modeling 128T configuration has been copied from the i95 repo /i95/robot/lib/libraries/Config.py to /ote_utils/utils/Config.py in this repo for simplicity.  In the future, these utilities may be reloacted to a shared location in order to avoid divergence away from Engineering.
+This repo contains libraries and scripts to simplify working with the configuration of 128T Routers over the NETCONF interface.  The majority of the files from this project are copied directly from the Engineering i95 repo under /i95/tools/python_distributions directory.  In the future, these utilities may be reloacted to a shared location in order to avoid divergence away from Engineering.
+
+## Python Version Support ##
+Presently, the libraries in this repository require python3.6
 
 ## Installation ##
 These utilities should be installed on a 128T Router or Conductor or another system that will interact with a remote 128T Router or Conductor's NETCONF interface.  After cloning the repo, run the following commands to install the libraries and other required dependencies.
 ```
-yum -y install python-ncclient
-pip install yinsolidated
-pip install <path/to/clone/location>
+pip3 install ncclient
+pip3 install yinsolidated
+pip3 install <path/to/clone/location>
 ```
+Note: If this code is to be included in a salt module, please install these libraries should be installed to the system path by using the option `-t /usr/lib64/python3.6/site-packages` with the commands above.
 
 ## Applying a configuration ##
 A simple shell script has been provided which can be used to apply a full textual configuration to a 128T Router or Conductor.  The format of this text file should match the format provided by `show configuration running` on the CLI.
@@ -20,10 +24,10 @@ cd <path/to/clone/location>
 Below you will find some example code to get you started working with these libraries.
 
 ### Importing the modules ###
-In order to interact with a 128T Router or Condcutor over NETCONF, you must import a manager from the [Python ncclient library](https://ncclient.readthedocs.io/en/latest/).  To convert the textual representation of the 128T cnfiguration to XML so that it can be pushed over NETCONF, you need to import the Config module.
+In order to interact with a 128T Router or Condcutor over NETCONF, you must import a manager from the [Python ncclient library](https://ncclient.readthedocs.io/en/latest/).  To convert the textual representation of the 128T cnfiguration to XML so that it can be pushed over NETCONF, you need to import the NetconfConverter class.
 ```
 from ncclient import manager
-from ote_utils import utils.Config
+from ote_utils.netconfutils.netconfconverter import NetconfConverter
 ```
 
 When working with the XML configuration, it is often useful to use the [Python lxml library](http://lxml.de).  Many of the further examples will make use of this library.  A full explanation of using this library is out of scope for this guide.
@@ -32,13 +36,13 @@ from lxml import etree
 ```
 
 ### Useful constants ###
-When working with the various XML namespaces in the 128T configuration, these constants can be handy.
+When working with the various XML namespaces in the 128T configuration, this dictionary can be handy.
 ```
-T128_NS = {'t128':'http://128technology.com/t128'}
-AUTHORITY_NS = {'authority-config':'http://128technology.com/t128/config/authority-config'}
-SYSTEM_NS = {'system-config':'http://128technology.com/t128/config/system-config'}
-INTERFACE_NS = {'interface-config':'http://128technology.com/t128/config/interface-config'}
-SERVICE_NS = {'service-config':'http://128technology.com/t128/config/service-config'}
+NS = {'t128':'http://128technology.com/t128',
+  'authy':'http://128technology.com/t128/config/authority-config',
+  'sys':'http://128technology.com/t128/config/system-config',
+  'if':'http://128technology.com/t128/config/interface-config', 
+  'svc':'http://128technology.com/t128/config/service-config'}
 ```
 
 ### Helper classes and functions ###
@@ -47,7 +51,7 @@ This function can be used to pull the current XML configuration over NETCONF for
 def _get_current_config_text(host='127.0.0.1', port='830', username='root', key_filename='/etc/128technology/ssh/pdc_ssh_key'):
   with manager.connect(host=host, port=port, username=username, key_filename=key_filename, allow_agent=True, look_for_keys=False, hostkey_verify=False) as m:
     c = m.get_config(source='running').data
-  return c.find('t128:config', namespaces=T128_NS)
+  return c.find('t128:config', namespaces=NS)
 ```
 
 The ncclient session can also be wrapped around a helper class like the one below.  Note that this class accepts an option of `validationType` when running the function `commitConfig`.  The supported values of this option are `distributed` (the default) and `local`.  When encountering issues with distributed validate, it may be useful to commit the configuration with `local`.  Please note, this option is only available on a Conductor.
@@ -125,7 +129,7 @@ def _commit_config_xml(config_xml, t128_host='127.0.0.1', t128_port='830', t128_
 
 This code snippet will convert a text-based config into XML so that it can be applied over NETCONF.
 ```
-cc = Config.Config()
-cc.load_t128_config_model('/var/model/consolidatedT128Model.xml')
-add_config_xml = cc.convert_config_to_netconf_xml(add_config.split('\n'))
+cc = NetconfConverter()
+cc.load_config_model('/var/model/consolidatedT128Model.xml')
+add_config_xml = cc.convert_config_to_netconf_xml(add_config.split('\n'), 'config')
 ```
