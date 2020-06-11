@@ -2,8 +2,10 @@
 Library for converting a running configuration to Netconf XML.
 """
 
-import yinsolidated
+from past.builtins import basestring
 from lxml import etree
+
+import yinsolidated
 
 
 class ConfigParseError(RuntimeError):
@@ -56,7 +58,7 @@ class NetconfConverter(object):
             tag (str): custom tag to add to xml block
             attributes (str): custom attr of starting tags in built netconf
         """
-        if isinstance(config_string_or_list, str):
+        if isinstance(config_string_or_list, basestring):
             config_list = self._convert_config_string_to_list(config_string_or_list)
         else:
             config_list = config_string_or_list
