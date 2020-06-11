@@ -2,8 +2,10 @@
 Library for converting a running configuration to Netconf XML.
 """
 
-import yinsolidated
+from past.builtins import basestring
 from lxml import etree
+
+import yinsolidated
 
 
 class ConfigParseError(RuntimeError):
