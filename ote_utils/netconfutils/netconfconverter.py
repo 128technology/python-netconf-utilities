@@ -56,7 +56,7 @@ class NetconfConverter(object):
             tag (str): custom tag to add to xml block
             attributes (str): custom attr of starting tags in built netconf
         """
-        if isinstance(config_string_or_list, basestring):
+        if isinstance(config_string_or_list, str):
             config_list = self._convert_config_string_to_list(config_string_or_list)
         else:
             config_list = config_string_or_list
