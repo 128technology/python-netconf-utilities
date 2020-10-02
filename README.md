@@ -20,7 +20,7 @@ cd <path/to/clone/location>
 Below you will find some example code to get you started working with these libraries.
 
 ### Importing the modules ###
-In order to interact with a 128T Router or Condcutor over NETCONF, you must import a manager from the [Python ncclient library](https://ncclient.readthedocs.io/en/latest/).  To convert the textual representation of the 128T cnfiguration to XML so that it can be pushed over NETCONF, you need to import the Config module.
+In order to interact with a 128T Router or Condcutor over NETCONF, you must import a manager from the [Python ncclient library](https://ncclient.readthedocs.io/en/latest/).  To convert the textual representation of the 128T configuration to XML so that it can be pushed over NETCONF, you need to import the Config module.
 ```
 from ncclient import manager
 from ote_utils import utils.Config
