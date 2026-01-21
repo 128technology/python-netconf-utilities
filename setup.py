@@ -10,5 +10,5 @@ setup(
         "ote_utils.netconfutils",
         "ote_utils.utils",
     ],
-    install_requires=["future==0.16.0"],
+    install_requires=["future==1.0.0"],
 )
